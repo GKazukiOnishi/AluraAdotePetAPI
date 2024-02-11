@@ -26,16 +26,14 @@ public class AbrigoService {
     }
 
     public void cadastrar(SolicitacaoAbrigoDTO abrigo) {
-        boolean nomeJaCadastrado = repository.existsByNome(abrigo.nome());
-        boolean telefoneJaCadastrado = repository.existsByTelefone(abrigo.telefone());
-        boolean emailJaCadastrado = repository.existsByEmail(abrigo.email());
+        boolean jaCadastrado = repository.existsByNomeOrTelefoneOrEmail(abrigo.nome(), abrigo.telefone(), abrigo.email());
 
-        if (nomeJaCadastrado || telefoneJaCadastrado || emailJaCadastrado) {
+        if (jaCadastrado) {
             throw new ValidacaoException("Dados não podem ser duplicados para outro abrigo!");
-        } else {
-            Abrigo novoAbrigo = new Abrigo(abrigo.nome(), abrigo.telefone(), abrigo.email());
-            repository.save(novoAbrigo);
         }
+        
+        Abrigo novoAbrigo = new Abrigo(abrigo.nome(), abrigo.telefone(), abrigo.email());
+        repository.save(novoAbrigo);
     }
 
     public Abrigo buscarPorIdOuNome(String idOuNome) {
