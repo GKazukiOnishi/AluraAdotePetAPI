@@ -100,5 +100,6 @@ public class Pet {
     }
 
     public void setAbrigo(Abrigo abrigo) {
+        this.abrigo = abrigo;
     }
 }
