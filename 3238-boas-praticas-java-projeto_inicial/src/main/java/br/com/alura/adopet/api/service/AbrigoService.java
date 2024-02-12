@@ -31,20 +31,22 @@ public class AbrigoService {
         if (jaCadastrado) {
             throw new ValidacaoException("Dados não podem ser duplicados para outro abrigo!");
         }
-        
+
         Abrigo novoAbrigo = new Abrigo(abrigo.nome(), abrigo.telefone(), abrigo.email());
         repository.save(novoAbrigo);
     }
 
     public Abrigo buscarPorIdOuNome(String idOuNome) {
-        Abrigo abrigo = null;
+        Abrigo abrigo;
         try {
             Long id = Long.parseLong(idOuNome);
             abrigo = repository.getReferenceById(id);
+            abrigo.getPets();
         } catch (NumberFormatException e) {
             abrigo = repository.findByNome(idOuNome);
+            abrigo.getPets();
         } catch (EntityNotFoundException enfe) {
-            return abrigo;
+            return null;
         }
         return abrigo;
     }

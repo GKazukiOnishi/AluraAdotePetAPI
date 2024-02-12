@@ -40,11 +40,15 @@ public class AbrigoController {
 
     @GetMapping("/{idOuNome}/pets")
     public ResponseEntity<List<DadosDetalhePetDTO>> listarPets(@PathVariable String idOuNome) {
-        List<DadosDetalhePetDTO> pets = abrigoService.listarPets(idOuNome);
-        if (pets.isEmpty()) {
+        try {
+            List<DadosDetalhePetDTO> pets = abrigoService.listarPets(idOuNome);
+            if (pets.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(pets);
+        } catch (NotFoundException e) {
             return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(pets);
     }
 
     @PostMapping("/{idOuNome}/pets")
